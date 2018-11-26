@@ -4,7 +4,7 @@
     "metadata": {
         "name": "wordpress-classic-standalone",
 	"annotations": {
-            "openshift.io/display-name": "WordPress (Classic / Standalone)",
+            "openshift.io/display-name": "WordPress",
 	    "description": "Creates a WordPress installation with separate MySQL database instance. Requires that two persistent volumes be available. If a ReadWriteMany persistent volume type is available and used, WordPress can be scaled to multiple replicas and the deployment strategy switched to Rolling to permit rolling deployments on restarts.",
 	    "tags": "quickstart,php,wordpress",
             "iconClass": "icon-php"
@@ -13,8 +13,8 @@
     "parameters": [
         {
             "name": "APPLICATION_NAME",
-            "description": "The name of the WordPress instance.",
-            "value": "my-wordpress-site",
+            "description": "The name of the WordPress site.",
+            "value": "hp-wordpress-site",
             "from": "[a-zA-Z0-9]",
             "required": true
         },
@@ -494,7 +494,8 @@
                     "requests": {
                         "storage": "${DATABASE_VOLUME_SIZE}"
                     }
-                }
+                },
+                "storageClassName": "basic-nas"
             }
         },
         {
@@ -503,7 +504,8 @@
             "metadata": {
                 "name": "${APPLICATION_NAME}-wordpress-data",
                 "labels": {
-                    "app": "${APPLICATION_NAME}"
+                    "app": "${APPLICATION_NAME}",
+                    "template": "wordpress-data"
                 }
             },
             "spec": {
@@ -514,7 +516,8 @@
                     "requests": {
                         "storage": "${WORDPRESS_VOLUME_SIZE}"
                     }
-                }
+                },
+                "storageClassName": "basic-nas"
             }
         }
     ]
